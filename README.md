@@ -25,12 +25,13 @@ As of now this id is not really used for anything.
 ## Features
 
  - Supports multiple clients
- - Assigns an unique id to every client (rolling int by default)
- - Some preset specific replies from the server, eg. sending "hello" prompts the server to reply with "world!"
+ - Assigns an unique id to every client (a rolling int by default)
+ - Some preset specific replies from the server, eg. sending a "hello" prompts the server to reply with a "world!"
 
 ## To do
 
- - Client could remember a number of server IPs it has recently been connected to.
  - Server could have a visible list of connected clients.
+ - Server should maybe have an option to stop and restart it.
+ - Client could remember a number of server IPs it has recently been connected to.
  - Clients should send a heartbeat.
  - Clients should timeout and drop out from the server if not heard from in a while.
