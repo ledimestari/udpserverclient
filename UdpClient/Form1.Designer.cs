@@ -63,18 +63,18 @@
             // textBox1
             // 
             textBox1.Location = new Point(83, 11);
-            textBox1.Margin = new Padding(2, 2, 2, 2);
+            textBox1.Margin = new Padding(2);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(150, 23);
             textBox1.TabIndex = 2;
-            textBox1.Text = "192.168.1.143";
+            textBox1.Text = "192.168.1.106";
             // 
             // listBox1
             // 
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 15;
             listBox1.Location = new Point(11, 171);
-            listBox1.Margin = new Padding(2, 2, 2, 2);
+            listBox1.Margin = new Padding(2);
             listBox1.Name = "listBox1";
             listBox1.Size = new Size(443, 79);
             listBox1.TabIndex = 4;
@@ -92,7 +92,7 @@
             // textBox3
             // 
             textBox3.Location = new Point(13, 82);
-            textBox3.Margin = new Padding(2, 2, 2, 2);
+            textBox3.Margin = new Padding(2);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(443, 23);
             textBox3.TabIndex = 6;
@@ -110,7 +110,7 @@
             // button1
             // 
             button1.Location = new Point(11, 109);
-            button1.Margin = new Padding(2, 2, 2, 2);
+            button1.Margin = new Padding(2);
             button1.Name = "button1";
             button1.Size = new Size(76, 25);
             button1.TabIndex = 8;
@@ -121,7 +121,7 @@
             // numericUpDown1
             // 
             numericUpDown1.Location = new Point(83, 38);
-            numericUpDown1.Margin = new Padding(2, 2, 2, 2);
+            numericUpDown1.Margin = new Padding(2);
             numericUpDown1.Maximum = new decimal(new int[] { 100000000, 0, 0, 0 });
             numericUpDown1.Name = "numericUpDown1";
             numericUpDown1.Size = new Size(148, 23);
@@ -142,7 +142,7 @@
             Controls.Add(textBox1);
             Controls.Add(label2);
             Controls.Add(label1);
-            Margin = new Padding(2, 2, 2, 2);
+            Margin = new Padding(2);
             Name = "Form1";
             Text = "UdpClient";
             Load += Form1_Load;

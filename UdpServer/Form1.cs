@@ -7,6 +7,7 @@ namespace UdpServer
 {
     public partial class Form1 : Form
     {
+        // global variables and lists
         bool serverIsRunning = false;
         int UdpListenPort;
         string localIP;
@@ -14,8 +15,6 @@ namespace UdpServer
         List<String> listOfClients = new List<string>();
         List<String> clientIds = new List<string>();
         int rollingClientId = 0;
-
-        UdpClient udpServer = new UdpClient();
 
         public Form1()
         {
@@ -42,26 +41,18 @@ namespace UdpServer
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // Create a thread on which the server is then running on.
             Thread thdUDPServer = new Thread(new ThreadStart(serverThread));
-            if (serverIsRunning == false)
-            {
-                // start server
-                serverIsRunning = true;
-                label4.Text = "Running";
-                label4.ForeColor = Color.Green;
-                button1.Enabled = false;
-                numericUpDown1 .Enabled = false;
-                textBox2 .Enabled = false;
-                listBox1.Items.Add("Server started on " + localIP + ", using port " + UdpListenPort);
-                thdUDPServer.Start();
-            }
-            else
-            {
-                // stop server
-                serverIsRunning = false;
-                label4.Text = "Not running";
-                label4.ForeColor = Color.Red;
-            }
+
+            // start the server
+            serverIsRunning = true;
+            label4.Text = "Running";
+            label4.ForeColor = Color.Green;
+            button1.Enabled = false;
+            numericUpDown1 .Enabled = false;
+            textBox2 .Enabled = false;
+            listBox1.Items.Add("Server started on " + localIP + ", using port " + UdpListenPort);
+            thdUDPServer.Start();
         }
 
         public void serverThread()
@@ -71,27 +62,30 @@ namespace UdpServer
             {
                 var remoteEP = new IPEndPoint(IPAddress.Any, UdpListenPort);
                 var data = udpServer.Receive(ref remoteEP); // listen on port 11000
-                string stringReceived = System.Text.Encoding.UTF8.GetString(data);
-                this.Invoke((MethodInvoker)(() => listBox1.Items.Add("Received data from: " + remoteEP.Address.ToString())));
-                this.Invoke((MethodInvoker)(() => listBox1.Items.Add("Received: " + stringReceived)));
-                //udpServer.Send(new byte[] { 1 }, 1, remoteEP); // reply back
+                string clientIP = remoteEP.Address.ToString(); // parse an IP of the client where server received data from
+                string stringReceived = System.Text.Encoding.UTF8.GetString(data);  // parse received data into a string
 
-                string clientIP = remoteEP.Address.ToString();
+                // Add lines to the listbox, needs to be done with Invoke as the ui is running on another thread
+                Invoke((MethodInvoker)(() => listBox1.Items.Add("Received data from: " + clientIP)));
+                Invoke((MethodInvoker)(() => listBox1.Items.Add("Received: " + stringReceived)));
 
                 // check to see if this client is already on listOfClients
                 if (!listOfClients.Contains(clientIP))
                 {
-                    listOfClients.Add(clientIP);
-                    clientIds.Add("0");
-                    int index = listOfClients.FindIndex(a => a.Contains(clientIP));
-                    rollingClientId++;
-                    clientIds[index] = rollingClientId.ToString();
+                    // if not, then we do these once for each new client
+                    listOfClients.Add(clientIP);    // add new client ip to the list
+                    clientIds.Add("0"); // add an element to the list of IDs
+                    int index = listOfClients.FindIndex(a => a.Contains(clientIP)); // find the number for this client, based on the amount of clients in listOfClients
+                    rollingClientId++;  // increase the client id by one
+                    clientIds[index] = rollingClientId.ToString();  // save the id of this client to a matching index in clientIds list
+                    // send a reply to the client and tell what id it got
                     string dataToSend = "The server has given you ID of " + clientIds[index];
                     Byte[] sendBytes = Encoding.ASCII.GetBytes(dataToSend);
                     udpServer.Send(sendBytes, sendBytes.Length, remoteEP);
                 }
 
-                // Specific replies
+                // Examples of some specific replies you can expect from the client
+                // You can write the server to run a custom response or custom code of function based on the what the clients sent.
                 
                 if (stringReceived == "hello")
                 {
@@ -109,14 +103,9 @@ namespace UdpServer
                     udpServer.Send(sendBytes, sendBytes.Length, remoteEP);
                 }
 
-                this.Invoke((MethodInvoker)(() => listBox1.SelectedIndex = listBox1.Items.Count - 1));
+                // this is a bit crude way to scroll the listbox to the bottom but it works
+                Invoke((MethodInvoker)(() => listBox1.SelectedIndex = listBox1.Items.Count - 1));
             }
-
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-
         }
     }
 }
