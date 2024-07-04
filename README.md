@@ -35,3 +35,5 @@ As of now this id is not really used for anything.
  - Client could remember a number of server IPs it has recently been connected to.
  - Clients should send a heartbeat.
  - Clients should timeout and drop out from the server if not heard from in a while.
+
+And as always, if you see an obvious way to make this better, while keeping everything simple, leave a pull request.
